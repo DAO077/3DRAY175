@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>eDrawings Web Viewer</title>
+  <title>eDrawings Web Viewer - Shaded with Edges</title>
   <!-- Nhập thư viện model-viewer của Google -->
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.4.0/model-viewer.min.js"></script>
-  <!-- Nhập FontAwesome cho icon giao diện eDrawings -->
+  <!-- Nhập FontAwesome cho icon giao diện -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
   <style>
@@ -22,8 +22,8 @@
       width: 100vw;
       height: 100vh;
       overflow: hidden;
-      /* Background dải màu xám xịn xò đặc trưng của SolidWorks/eDrawings */
-      background: radial-gradient(circle at center, #5a626e 0%, #1e242d 100%);
+      /* Background xám đặc trưng của eDrawings / SolidWorks */
+      background: radial-gradient(circle at center, #676f7c 0%, #1e242d 100%);
     }
 
     model-viewer {
@@ -32,7 +32,7 @@
       --poster-color: transparent;
     }
 
-    /* Thanh Header trên cùng kiểu eDrawings */
+    /* Header eDrawings */
     .header-bar {
       position: absolute;
       top: 0;
@@ -56,7 +56,6 @@
       gap: 10px;
       font-weight: 600;
       font-size: 15px;
-      letter-spacing: 0.5px;
     }
 
     .brand i {
@@ -64,7 +63,7 @@
       font-size: 18px;
     }
 
-    /* Thanh công cụ đệm phía dưới (Bottom Toolbar) */
+    /* Thanh công cụ đệm phía dưới */
     .toolbar {
       position: absolute;
       bottom: 20px;
@@ -115,7 +114,6 @@
       margin: 0 4px;
     }
 
-    /* Tooltip chú thích khi di chuột vào nút */
     .tool-btn::after {
       content: attr(data-tooltip);
       position: absolute;
@@ -141,36 +139,35 @@
 </head>
 <body>
 
-  <!-- Header eDrawings -->
+  <!-- Header -->
   <div class="header-bar">
     <div class="brand">
       <i class="fa-solid fa-cube"></i>
-      <span>eDrawings Web Viewer</span>
+      <span>eDrawings Web Viewer (Shaded with Edges)</span>
     </div>
   </div>
 
-  <!-- Khung xem 3D -->
+  <!-- Khung xem 3D tối ưu dạng CAD / Shaded with Edges -->
   <model-viewer 
     id="viewer"
     src="ray175.glb" 
-    alt="3D Model"
+    alt="3D CAD Model"
     camera-controls 
-    shadow-intensity="1.5"
-    shadow-softness="0.5"
-    exposure="1"
+    shadow-intensity="0.3"
+    shadow-softness="0.2"
+    exposure="1.1"
+    environment-image="neutral"
     interaction-prompt="none">
   </model-viewer>
 
-  <!-- Thanh công cụ điều khiển kiểu eDrawings -->
+  <!-- Thanh công cụ -->
   <div class="toolbar">
-    <!-- Nút Home / Iso View -->
     <button class="tool-btn" data-tooltip="Isometric View" onclick="setView('45deg 55deg 100%')">
       <i class="fa-solid fa-house"></i>
     </button>
     
     <div class="divider"></div>
 
-    <!-- Các hướng nhìn chuẩn (Standard Views) -->
     <button class="tool-btn" data-tooltip="Front View" onclick="setView('0deg 90deg 100%')">
       <i class="fa-solid fa-square"></i>
     </button>
@@ -183,12 +180,10 @@
 
     <div class="divider"></div>
 
-    <!-- Tự động xoay -->
     <button id="rotateBtn" class="tool-btn" data-tooltip="Auto Rotate" onclick="toggleRotate()">
       <i class="fa-solid fa-rotate"></i>
     </button>
 
-    <!-- Reset vị trí Zoom -->
     <button class="tool-btn" data-tooltip="Reset Zoom" onclick="resetZoom()">
       <i class="fa-solid fa-expand"></i>
     </button>
@@ -199,13 +194,13 @@
     const rotateBtn = document.getElementById('rotateBtn');
     let isRotating = false;
 
-    // Hàm chuyển đổi hướng nhìn (View)
+    // Chỉnh góc nhìn
     function setView(orbit) {
       viewer.cameraOrbit = orbit;
       viewer.jumpToGoal();
     }
 
-    // Bật/tắt tự động xoay
+    // Tự động xoay
     function toggleRotate() {
       isRotating = !isRotating;
       if (isRotating) {
@@ -217,7 +212,7 @@
       }
     }
 
-    // Reset góc nhìn ban đầu
+    // Reset góc nhìn
     function resetZoom() {
       viewer.cameraTarget = 'auto auto auto';
       viewer.cameraOrbit = '45deg 55deg 100%';
